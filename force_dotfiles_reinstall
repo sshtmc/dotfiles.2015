@@ -18,10 +18,11 @@ curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | 
 #
 # setup vim
 #
+cd vim
 VIMVER=$(vim --version | head -n1 | cut -d ' ' -f 5)
 if [ "$VIMVER" != 7.3 ];
 then
     ./force_dotfiles_reinstall
 fi
-cd vim; curl http://j.mp/spf13-vim3 -L -o - | sh
+curl http://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
 
