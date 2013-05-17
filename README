@@ -1,0 +1,5 @@
+Just some sensible configuration files for my home directory
+
+Run
+  force_dotfiles_reinstall
+if you want to overwrite your current config files with the ones in this repository
