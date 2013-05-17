@@ -3,6 +3,25 @@
 BASE=$(dirname "$0")
 BASE=$(cd "$BASE"; pwd)
 
-ln -sf $BASE/bash_profile $HOME/.bash_profile
-ln -sf $BASE/bashrc $HOME/.bashrc
+#
+# setup bash
+#
+ln -sf $BASE/bash/bash_profile $HOME/.bash_profile
+ln -sf $BASE/bash/bashrc $HOME/.bashrc
+
+#
+# setup zsh
+#
+curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
+
+
+#
+# setup vim
+#
+VIMVER=$(vim --version | head -n1 | cut -d ' ' -f 5)
+if [ "$VIMVER" != 7.3 ];
+then
+    ./force_dotfiles_reinstall
+fi
+cd vim; curl http://j.mp/spf13-vim3 -L -o - | sh
 
