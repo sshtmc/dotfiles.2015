@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# stop execution on any error
+set -e
+
+BASE=$(dirname "$0")
+BASE=$(cd "$BASE"; pwd)
+NPROC=$(expr $(grep -c '^processor' /proc/cpuinfo) + 1)
+
+#sudo yum install -y gcc gcc-c++ cmake python-devel ncurses-devel libXt-devel gnome-desktop-devel perl-ExtUtils-Embed
+# sudo yum-builddep vim-enhanced
+
+# wget -c ftp://ftp.vim.org/pub/vim/unix/vim-7.3.tar.bz2
+# tar xf vim-7.3.tar.bz2
+
+if ! [ -d 'vim-hg' ]
+then
+    hg clone https://code.google.com/p/vim/ vim-hg
+    cd vim-hg
+else
+    cd vim-hg
+    hg pull -u
+fi
+# ./configure --with-features=huge --enable-gui=gtk2 --prefix=$HOME/progs/vim73
+./configure --with-features=huge \
+    --enable-rubyinterp \
+    --enable-pythoninterp \
+    --enable-perlinterp \
+    --enable-gui=gtk2 --enable-cscope --prefix=$HOME/progs/vim73
+make -j$NPROC
+make install
+#cd "$BASE"
+#rm -rf vim73
+#echo 'export PATH=$HOME/vim73/bin:$PATH' >>$HOME/.bashrc
+#echo 'export PATH=$HOME/vim73/bin:$PATH' >>$HOME/.zshrc
+

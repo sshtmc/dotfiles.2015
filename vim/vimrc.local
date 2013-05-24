@@ -1,0 +1,28 @@
+set guifont=Monospace\ 10
+
+Bundle 'brookhong/cscope.vim'
+Bundle 'vim-scripts/grep.vim'
+nnoremap <silent> <F3> :Regrep<CR>
+
+nmap <C-Q> :qall<CR>
+imap <C-Q> <Esc>:qall<CR>
+nmap <C-S> :wall<CR>
+imap <C-S> <Esc>:wall<CR>
+
+nnoremap ; :%s/\<<C-r><C-w>\>/<C-r><C-w>/gc
+
+" Autocompletion "
+Bundle 'Valloric/YouCompleteMe'
+nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
+nnoremap g] :YcmCompleter GoToDefinitionElseDeclaration *<CR>
+
+
+" Colors "
+color peaksea
+set t_Co=16
+
+" TAB preference
+set softtabstop=8               " Let backspace delete indent
+set tabstop=8
+set shiftwidth=8
+set noexpandtab

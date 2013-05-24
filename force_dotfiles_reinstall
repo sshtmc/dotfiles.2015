@@ -13,6 +13,7 @@ ln -sf $BASE/bash/bashrc $HOME/.bashrc
 # setup zsh
 #
 curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
+ln -sf $BASE/zshrc $HOME/.zshrc
 
 
 #
@@ -25,4 +26,6 @@ then
     ./force_dotfiles_reinstall
 fi
 curl http://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
+
+ln -sf $BASE/vim/vimrc.local $HOME/.vimrc.local
 
