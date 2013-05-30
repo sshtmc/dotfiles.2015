@@ -12,12 +12,14 @@ nnoremap ; :%s/\<<C-r><C-w>\>/<C-r><C-w>/gc
 
 " Autocompletion "
 Bundle 'Valloric/YouCompleteMe'
-" nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
+nnoremap <silent> <F5> :YcmForceCompileAndDiagnostics<CR>
 " nnoremap g] :YcmCompleter GoToDefinitionElseDeclaration *<CR>
 let g:ycm_confirm_extra_conf = 0 " don't ask if it should load the .ycm_extra_conf.py file
 let g:ycm_complete_in_comments = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_key_invoke_completion = '<C-p>'
+let g:ycm_allow_changing_updatetime = 1
+
 
 " Colors "
 color peaksea
@@ -47,3 +49,7 @@ endfunction
 au BufEnter /* call LoadCscope()
 
 nnoremap <silent> g] :cscope find g <cword><CR>
+nnoremap <silent> <F3> :cscope find s <cword><CR>
+
+" Linux Kernel coding style
+Bundle 'vivien/vim-addon-linux-coding-style'

@@ -27,5 +27,6 @@ then
 fi
 curl http://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
 
+ln -sf $BASE/vim/vimrc $HOME/.vimrc
 ln -sf $BASE/vim/vimrc.local $HOME/.vimrc.local
 
