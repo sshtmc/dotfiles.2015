@@ -1,0 +1,45 @@
+#!/bin/bash
+
+TBASE=$(mktemp -d)
+LOFF_URL="http://download.documentfoundation.org/libreoffice/stable/4.0.3/rpm/x86_64/LibreOffice_4.0.3_Linux_x86-64_rpm.tar.gz"
+
+cd $HOME/Downloads
+wget -c "$LOFF_URL"
+
+cd $TBASE
+LOFF_ARCH=$(basename "$LOFF_URL")
+tar xf "$HOME/Downloads/$LOFF_ARCH"
+cd LibreOffice*/RPMS
+
+mkdir TMP
+cd TMP
+for f in ../*.rpm ../desktop-integration/libreoffice*freedesktop*.rpm
+do
+	rpm2cpio $f | cpio -id
+done
+
+mkdir -p $HOME/progs
+LOFF_DIR=$(basename ./opt/libreoffice*)
+DEST_DIR=$HOME/progs/LOFF_DIR
+if [ -d $DEST_DIR ];
+then
+	echo "Error: destination dir $DEST_DIR already exists! Exiting!"
+	exit 1;
+fi
+mv ./opt/$LOFF_DIR $DEST_DIR
+
+mkdir -p $DEST_DIR/bin
+ln -sf $DEST_DIR/bin/libreoffice4.0-printeradmin $DEST_DIR/program/spadmin
+ln -sf $DEST_DIR/bin/libreoffice4.0 $DEST_DIR/program/soffice
+ln -sf $DEST_DIR/bin/libreoffice4 $DEST_DIR/program/soffice
+ln -sf $DEST_DIR/bin/libreoffice $DEST_DIR/program/soffice
+ln -sf $HOME/bin/libreoffice4.0-printeradmin $DEST_DIR/program/spadmin
+ln -sf $HOME/bin/libreoffice4.0 $DEST_DIR/program/soffice
+ln -sf $HOME/bin/libreoffice4 $DEST_DIR/program/soffice
+ln -sf $HOME/bin/libreoffice $DEST_DIR/program/soffice
+
+
+
+cd
+rm -rf $TBASE
+
