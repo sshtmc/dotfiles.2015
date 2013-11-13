@@ -1,29 +1,64 @@
 set guifont=Monospace\ 10
 
-Bundle 'vim-scripts/grep.vim'
-nnoremap <silent> <F3> :Regrep<CR>
-
 nmap <C-Q> :qall<CR>
 imap <C-Q> <Esc>:qall<CR>
 nmap <C-S> :wall<CR>
 imap <C-S> <Esc>:wall<CR>
 
+set noautochdir
+
+" Running this command populates the argument list with all of the files
+" listed in the quickfix list:
+" http://stackoverflow.com/questions/5686206/search-replace-using-quickfix-list-in-vim
+command! -nargs=0 -bar Qargs execute 'args ' . QuickfixFilenames()
+function! QuickfixFilenames()
+  " Building a hash ensures we get each buffer only once
+  let buffer_numbers = {}
+  for quickfix_item in getqflist()
+    let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
+  endfor
+  return join(values(buffer_numbers))
+endfunction
+
+function! FindReplaceAll()
+  let curline = getline('.')
+  call inputsave()
+  let s:searchfor = input('Search For Word: ', expand("<cword>"))
+  call inputrestore()
+  let s:replacewith = input('Replace With: ', expand("<cword>"))
+  call inputrestore()
+  execute 'silent Ggrep '. s:searchfor
+  execute 'args ' . QuickfixFilenames()
+  execute 'argdo %s/' . s:searchfor . '/' . s:replacewith . '/gc'
+  execute 'argdo update'
+endfunction
+
 nnoremap ; :%s/\<<C-r><C-w>\>/<C-r><C-w>/gc
+" nnoremap ; :Ag <C-R><C-W><CR>:Qargs<CR>:argdo %s/<C-R><C-W>/<C-R><C-W>/gc<CR>:argdo update<CR>
+nmap <C-F> :Ack <C-R><C-W>
+nmap <C-R> :call FindReplaceAll()<CR>
 
-" Autocompletion "
-Bundle 'Valloric/YouCompleteMe'
-nnoremap <silent> <F5> :YcmForceCompileAndDiagnostics<CR>
-" nnoremap g] :YcmCompleter GoToDefinitionElseDeclaration *<CR>
-let g:ycm_confirm_extra_conf = 0 " don't ask if it should load the .ycm_extra_conf.py file
-let g:ycm_complete_in_comments = 1
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_key_invoke_completion = '<C-p>'
-let g:ycm_allow_changing_updatetime = 1
+" copy&paste from system clipboard
+set clipboard=unnamed
 
+" 
+" " Autocompletion "
+" Bundle 'Valloric/YouCompleteMe'
+" nnoremap <silent> <F5> :YcmForceCompileAndDiagnostics<CR>
+" " nnoremap g] :YcmCompleter GoToDefinitionElseDeclaration *<CR>
+" let g:ycm_confirm_extra_conf = 0 " don't ask if it should load the .ycm_extra_conf.py file
+" let g:ycm_complete_in_comments = 1
+" let g:ycm_collect_identifiers_from_comments_and_strings = 1
+" let g:ycm_key_invoke_completion = '<C-p>'
+" let g:ycm_allow_changing_updatetime = 1
+" 
 
-" Colors "
-color peaksea
-set t_Co=16
+" Visual preferences
+" color peaksea
+" colorscheme guepardo
+" set t_Co=256
+colorscheme solarized
+set background=light
 
 " TAB preference
 set softtabstop=8               " Let backspace delete indent
@@ -33,7 +68,7 @@ set noexpandtab
 
 " Source code navigation "
 nnoremap <F2> :TagbarOpenAutoClose<CR>
-let g:tagbar_left = 1 " show on the left side
+" let g:tagbar_left = 1 " show on the left side
 
 " Auto-load CScope database, recursively going up
 
@@ -46,10 +81,42 @@ function! LoadCscope()
     set cscopeverbose
   endif
 endfunction
-au BufEnter /* call LoadCscope()
+" au BufEnter /* call LoadCscope()  " Every time a new buffer is opened
+call LoadCscope() " Do it only once, when VIM starts
 
 nnoremap <silent> g] :cscope find g <cword><CR>
 nnoremap <silent> <F3> :cscope find s <cword><CR>
+" Bundle 'rking/ag.vim'
+nmap <silent> <C-S-G> :cprev<CR>
+nmap <silent> <C-G> :cnext<CR>
 
 " Linux Kernel coding style
 Bundle 'vivien/vim-addon-linux-coding-style'
+
+" Nerd Commenter
+map <silent> <C-D> <plug>NERDCommenterToggle
+
+" Show Undo Tree
+let g:undotree_SetFocusWhenToggle=0
+let g:undotree_HighlightChangedText=0
+let g:undotree_SplitLocation = "botright"
+map <silent> <C-Z> :undo<CR>:UndotreeShow<CR>
+map <silent> <C-Y> :redo<CR>:UndotreeShow<CR>
+map <silent> u :undo<CR>:UndotreeShow<CR>
+map <silent> <C-R> :redo<CR>:UndotreeShow<CR>
+
+" Bundle 'Valloric/ListToggle'
+" Bundle 'vim-scripts/listmaps.vim'
+
+" Bubble-move text around
+Bundle 'tpope/vim-unimpaired'
+" Bubble single lines
+nmap <C-Up> [e
+nmap <C-Down> ]e
+" Bubble multiple lines
+vmap <C-Up> [egv
+vmap <C-Down> ]egv
+
+nmap <silent> <esc> :UndotreeHide<CR>:cclose<CR>:NERDTreeClose<CR>
+
+
