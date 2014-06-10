@@ -1,0 +1,68 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides: syncthing
+# Required-Start: $local_fs $remote_fs
+# Required-Stop: $local_fs $remote_fs
+# Should-Start: $network
+# Should-Stop: $network
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Multi-user daemonized version of syncthing.
+# Description: Starts the syncthing daemon for all registered users.
+### END INIT INFO
+
+# Replace with users you want to run syncthing clients for
+syncthing_USERS="sat"
+DAEMON=/home/sat/bin/syncthing-armv6
+
+LOG=/var/log/syncthing
+test -r $LOG || { touch $LOG; chown $stuser $LOG; }
+
+startd() {
+  for stuser in $syncthing_USERS; do
+    HOMEDIR=$(getent passwd $stuser | awk -F: '{print $6}')
+    if [ -f $config ]; then
+      logger -s "Starting syncthing for $stuser"
+      start-stop-daemon --background --no-close --nicelevel 19 --iosched idle --oknodo --chuid $stuser --start --user $stuser --exec $DAEMON >$LOG 2>&1
+    else
+      logger -s "Couldn't start syncthing for $stuser (no $config found)"
+    fi
+  done
+}
+
+stopd() {
+  for stuser in $syncthing_USERS; do
+    dbpid=$(pgrep -fu $stuser $DAEMON)
+    if [ ! -z "$dbpid" ]; then
+      logger -s "Stopping syncthing for $stuser"
+      start-stop-daemon -o -c $stuser -K -u $stuser -x $DAEMON
+    fi
+  done
+}
+
+status() {
+  for stuser in $syncthing_USERS; do
+    dbpid=$(pgrep -u $stuser -x $DAEMON)
+    if [ -z "$dbpid" ]; then
+      logger -s "syncthing for USER $stuser: not running."
+    else
+      logger -s "syncthing for USER $stuser: running (pid $dbpid)"
+    fi
+  done
+}
+
+case "$1" in
+  start) startd
+    ;;
+  stop) stopd
+    ;;
+  restart|reload|force-reload) stopd && startd
+    ;;
+  status) status
+    ;;
+  *) echo "Usage: /etc/init.d/syncthing {start|stop|reload|force-reload|restart|status}"
+     exit 1
+   ;;
+esac
+
+exit 0
