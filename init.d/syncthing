@@ -11,19 +11,16 @@
 # Description: Starts the syncthing daemon for all registered users.
 ### END INIT INFO
 
-# Replace with users you want to run syncthing clients for
+# Replace with users you want to run syncthing clients for (space separated)
 syncthing_USERS="sat"
 DAEMON=/home/sat/bin/syncthing-armv6
-
-LOG=/var/log/syncthing
-test -r $LOG || { touch $LOG; chown $stuser $LOG; }
 
 startd() {
   for stuser in $syncthing_USERS; do
     HOMEDIR=$(getent passwd $stuser | awk -F: '{print $6}')
     if [ -f $config ]; then
       logger -s "Starting syncthing for $stuser"
-      start-stop-daemon --background --no-close --nicelevel 19 --iosched idle --oknodo --chuid $stuser --start --user $stuser --exec $DAEMON >$LOG 2>&1
+      start-stop-daemon --background --no-close --nicelevel 19 --iosched idle --oknodo --chuid $stuser --start --user $stuser --exec $DAEMON 2>&1 | logger -i &
     else
       logger -s "Couldn't start syncthing for $stuser (no $config found)"
     fi
