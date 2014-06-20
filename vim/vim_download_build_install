@@ -21,16 +21,11 @@ else
     cd vim-hg
     hg pull -u
 fi
-# ./configure --with-features=huge --enable-gui=gtk2 --prefix=$HOME/progs/vim73
 ./configure --with-features=huge \
     --enable-rubyinterp \
     --enable-pythoninterp \
     --enable-perlinterp \
-    --enable-gui=gtk2 --enable-cscope --prefix=$HOME/progs/vim73
+    --enable-gui=gtk2 --enable-cscope --prefix=$HOME/progs/vim7
 make -j$NPROC
 make install
-#cd "$BASE"
-#rm -rf vim73
-#echo 'export PATH=$HOME/vim73/bin:$PATH' >>$HOME/.bashrc
-#echo 'export PATH=$HOME/vim73/bin:$PATH' >>$HOME/.zshrc
 

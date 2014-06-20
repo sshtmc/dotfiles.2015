@@ -36,7 +36,7 @@ endfunction
 nnoremap ; :%s/\<<C-r><C-w>\>/<C-r><C-w>/gc
 " nnoremap ; :Ag <C-R><C-W><CR>:Qargs<CR>:argdo %s/<C-R><C-W>/<C-R><C-W>/gc<CR>:argdo update<CR>
 nmap <C-F> :Ack <C-R><C-W>
-nmap <C-R> :call FindReplaceAll()<CR>
+" nmap <C-R> :call FindReplaceAll()<CR>
 
 " copy&paste from system clipboard
 set clipboard=unnamed
@@ -84,6 +84,8 @@ endfunction
 " au BufEnter /* call LoadCscope()  " Every time a new buffer is opened
 call LoadCscope() " Do it only once, when VIM starts
 
+autocmd! BufRead,BufNewFile *.ics setfiletype icalendar
+
 nnoremap <silent> g] :cscope find g <cword><CR>
 nnoremap <silent> <F3> :cscope find s <cword><CR>
 " Bundle 'rking/ag.vim'
@@ -97,13 +99,13 @@ Bundle 'vivien/vim-addon-linux-coding-style'
 map <silent> <C-D> <plug>NERDCommenterToggle
 
 " Show Undo Tree
-let g:undotree_SetFocusWhenToggle=0
-let g:undotree_HighlightChangedText=0
-let g:undotree_SplitLocation = "botright"
-map <silent> <C-Z> :undo<CR>:UndotreeShow<CR>
-map <silent> <C-Y> :redo<CR>:UndotreeShow<CR>
-map <silent> u :undo<CR>:UndotreeShow<CR>
-map <silent> <C-R> :redo<CR>:UndotreeShow<CR>
+" let g:undotree_SetFocusWhenToggle=0
+" let g:undotree_HighlightChangedText=0
+" let g:undotree_SplitLocation = "botright"
+" map <silent> <C-Z> :undo<CR>:UndotreeShow<CR>
+" map <silent> <C-Y> :redo<CR>:UndotreeShow<CR>
+" map <silent> u :undo<CR>:UndotreeShow<CR>
+" map <silent> <C-R> :redo<CR>:UndotreeShow<CR>
 
 " Bundle 'Valloric/ListToggle'
 " Bundle 'vim-scripts/listmaps.vim'
@@ -119,4 +121,15 @@ vmap <C-Down> ]egv
 
 nmap <silent> <esc> :UndotreeHide<CR>:cclose<CR>:NERDTreeClose<CR>
 
+nmap <leader>date "=strftime("%Y-%m-%d")<CR>p
+nmap <leader>time "=strftime("%H:%M:%S")<CR>p
+nmap <leader>datetime "=strftime("%Y-%m-%d %H:%M:%S")<CR>p
+
+" Wrap lines only visually
+:set wrap      " word wrap visually (as opposed to changing the text in the buffer)
+:set linebreak " only wrap at a character in the breakat option (by default, this includes ' ^I!@*-+;:,./?' (note the inclusion of ' ' and that ^I is the control character for Tab))
+:set nolist    " list disables linebreak
+:set textwidth=0       " prevent Vim from automatically inserting line breaks in newly entered text.
+:set wrapmargin=0      " in pair with the above
+:set formatoptions+=l  " keep your existing 'textwidth' settings for most lines in your file, but not have Vim automatically reformat when typing on existing lines
 
