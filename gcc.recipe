@@ -1,0 +1,13 @@
+
+VERS=4.9.0
+wget http://mirror.switch.ch/ftp/mirror/gnu/gcc/gcc-$VERS/gcc-$VERS.tar.bz2
+tar xf gcc-$VERS.tar.bz2
+cd gcc-$VERS
+./contrib/download_prerequisites
+cd ..
+mkdir gcc-objdir
+cd gcc-objdir
+"$PWD/../gcc-$VERS/configure" --prefix=/opt/gcc-$VERS --program-suffix=-$VERS
+make -j5
+make install
+
