@@ -3,12 +3,14 @@ BASE=$(dirname "$0")
 BASE=$(cd "$BASE/.."; pwd)
 
 T=$(mktemp -d)
+trap "rm -rf $T" EXIT
 cd $T
 
-wget https://launchpad.net/byobu/trunk/5.43/+download/byobu_5.43.orig.tar.gz
-tar xf byobu_5.43.orig.tar.gz
+VERS=5.80
+wget https://launchpad.net/byobu/trunk/$VERS/+download/byobu_$VERS.orig.tar.gz
+tar xf byobu_$VERS.orig.tar.gz
 
-cd byobu-5.43
+cd byobu-$VERS
 ./configure --prefix=$HOME/progs/byobu
 make
 make install

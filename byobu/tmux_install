@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -e
+
+BASE=$(dirname "$0")
+BASE=$(cd "$BASE/.."; pwd)
+
+T=$(mktemp -d)
+cd $T
+
+FV=libevent-2.0.21-stable
+F=$FV.tar.gz
+wget https://github.com/downloads/libevent/libevent/$F
+tar xf $F
+cd $FV
+./configure --prefix=$HOME/progs/libevent
+make -j5
+make install
+cd -
+
+FV=ncurses-5.9
+F=$FV.tar.gz
+wget http://ftp.gnu.org/pub/gnu/ncurses/$F
+tar xf $F
+cd $FV
+./configure --prefix=$HOME/progs/ncurses
+make -j5
+make install
+cd -
+
+export PKG_CONFIG_PATH=$(find $HOME/progs -name pkgconfig | tr '\n' ':'):$PKG_CONFIG_PATH
+
+wget http://sourceforge.net/projects/tmux/files/tmux/tmux-1.8/tmux-1.8.tar.gz/download
+tar xf tmux-*.tar.gz
+
+export CPPFLAGS="-I$HOME/progs/ncurses/include" LDFLAGS="-static -L$HOME/progs/ncurses/lib"
+cd tmux-1.8
+./configure --prefix=$HOME/progs/tmux --with-libevent=$HOME/progs/libevent --enable-static
+make -j5
+make install
+cd -
+
+rm -rf $T
+
