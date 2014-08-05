@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+
+cd $HOME/progs/repos/qt-creator
+
+git pull
+git reset --hard
+
+export PATH=/opt/qt53/5.3/gcc_64/bin:/usr/local/bin:/usr/bin:/bin
+qmake -r QMAKE_CXX=g++-4.9.0 QMAKE_CC=gcc-4.9.0
+
+make -j5
+
+
+if test -d $HOME/progs/qt-creator;
+then
+    mv $HOME/progs/qt-creator $HOME/qt-creator-$(date +"%Y-%m-%d")
+fi
+make install INSTALL_ROOT=$HOME/progs/qt-creator

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+T=$(mktemp -d)
+trap "rm -rf $T" EXIT
+cd $T
+git clone --depth=1 http://llvm.org/git/llvm.git
+cd llvm/tools
+git clone --depth=1 http://llvm.org/git/clang.git
+cd clang
+git config branch.master.rebase true
+cd ../..
+git config branch.master.rebase true
+mkdir obj
+cd obj
+export CC=gcc-4.9.0
+export CXX=g++-4.9.0
+../configure --enable-optimized --prefix=/opt/llvm
+ionice -c3 nice -n 20 make -j6
+make install

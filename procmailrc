@@ -1,0 +1,9 @@
+
+#VERBOSE=on
+#LOGABSTRACT=yes
+#LOGFILE=/home/sat/Mail/procmail.log
+
+# pass to a contact-photo fetcher, and ('c') continue processing, ie deliver to mbox
+:0c
+| /home/sat/bin/bluepages_get_photos
+
