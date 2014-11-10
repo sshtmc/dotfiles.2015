@@ -1,13 +1,14 @@
+#!/bin/bash
 
-VERS=4.9.0
-wget http://mirror.switch.ch/ftp/mirror/gnu/gcc/gcc-$VERS/gcc-$VERS.tar.bz2
-tar xf gcc-$VERS.tar.bz2
+VERS=4.9.2
+wget -c http://mirror.switch.ch/ftp/mirror/gnu/gcc/gcc-$VERS/gcc-$VERS.tar.bz2
+ionice -c3 nice -n 20 tar xf gcc-$VERS.tar.bz2
 cd gcc-$VERS
-./contrib/download_prerequisites
+ionice -c3 nice -n 20 ./contrib/download_prerequisites
 cd ..
 mkdir gcc-objdir
 cd gcc-objdir
-"$PWD/../gcc-$VERS/configure" --prefix=/opt/gcc-$VERS --program-suffix=-$VERS
-make -j5
-make install
+ionice -c3 nice -n 20 "$PWD/../gcc-$VERS/configure" --prefix=/opt/gcc-$VERS --program-suffix=-$VERS
+ionice -c3 nice -n 20 make -j5
+ionice -c3 nice -n 20 make install
 
