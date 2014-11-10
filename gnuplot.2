@@ -19,6 +19,11 @@ set border 3 back linestyle 80 # Remove border on top and right.  These
 set xtics nomirror
 set ytics nomirror
 
+# load custom palettes
+set loadpath '~/repos/gnuplot-colorbrewer/diverging' \
+    '~/repos/gnuplot-colorbrewer/qualitative' \
+    '~/repos/gnuplot-colorbrewer/sequential'
+
 #set log x
 #set mxtics 10    # Makes logscale look good.
 
@@ -36,5 +41,5 @@ set style line 4 lt rgb "#F25900" lw 2 pt 9
 set xlabel ""
 set ylabel ""
 
-set key bottom right
+# set key bottom right
 
