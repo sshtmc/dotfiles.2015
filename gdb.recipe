@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+T=$(mktemp -d)
+trap "cd $T; $SHELL; rm -rf $T" EXIT
+cd $T
+
+VER=7.8
+
+wget http://mirror.switch.ch/ftp/mirror/gnu/gdb/gdb-$VER.tar.xz
+tar xf gdb-$VER.tar.xz
+cd gdb-$VER
+
+# CC=gcc-4.9.0 CXX=g++-4.9.0
+configure --prefix=/opt/gdb-$VER
+ionice -c3 nice -n 20 make -j5
+ionice -c3 nice -n 20 make install
+
