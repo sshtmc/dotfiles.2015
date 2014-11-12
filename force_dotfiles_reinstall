@@ -40,6 +40,9 @@ $BASE/byobu/byobu_install
 # Gnuplot
 ln -sf $BASE/gnuplot.2 $HOME/.gnuplot
 
+# Latexmk
+ln -s $BASE/latexmkrc $HOME/.latexmkrc
+
 # Fuzzy Find (with CTRL+R)
 ln -s $BASE/fzf $HOME/.fzf
 ln -s $BASE/fzf.bash $HOME/.fzf.bash
