@@ -107,42 +107,56 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR=vim
 
 # enable X ACL for localhost to connect to for GUI applications to work
-xhost +local: >/dev/null
+# xhost +local: >/dev/null
 
 alias l='ls -ltr --color=auto'
 alias see='xdg-open'
 alias rsyncrepo="rsync --filter=':- .gitignore' -aP"
-alias t='$HOME/progs/todo.txt_cli-2.9-bin/todo.sh'
+# alias t='$HOME/progs/todo.txt_cli-2.9-bin/todo.sh'
 IFS='
 '
 alias svn-cdiff='svn diff -x -p "$*" | colordiff | less'
 alias svn-head-diff='svn diff -r`(svn info | grep Revision | cut -d" " -f2)`:HEAD | colordiff'
 alias svn-head-summary='svn diff -r`(svn info | grep Revision | cut -d" " -f2)`:HEAD --summarize'
 
-export GDFONTPATH=/usr/lib64/python2.6/site-packages/matplotlib/mpl-data/fonts/ttf:$GDFONTPATH
-export PATH=$HOME/.local/bin:$HOME/bin:/opt/qt485/bin:/opt/qt5/5.3/gcc_64/bin:/opt/git21/bin:$PATH
+# export GDFONTPATH=/usr/lib64/python2.6/site-packages/matplotlib/mpl-data/fonts/ttf:$GDFONTPATH
+export PATH=$HOME/.local/bin:$HOME/bin:/opt/git21/bin:$PATH
 export PATH=$HOME/projects/flashcard-scripts:$PATH
 
 
 # added by Miniconda 3.6.0 installer
-export PATH="/home/sat/miniconda/bin:$PATH"
+# export PATH="/home/sat/miniconda/bin:$PATH"
 # Node.js
 # export PATH=/opt/node.js/bin:$PATH
 
-export PATH=/opt/gnuplot/bin:$PATH
-export PATH=/opt/llvm/bin:$PATH
+# export PATH=/opt/gnuplot/bin:$PATH
+# export PATH=/opt/llvm/bin:$PATH
 export PATH=/opt/gcc-4.9.2/bin:$PATH
 export PATH=/opt/gdb-7.8/bin:$PATH
+# export PATH=/opt/inkscape/bin:$PATH
+
 # Linaro
 # export PATH=/opt/gcc-linaro-arm-linux-gnueabihf-4.7-2013.01-20130125_linux/bin:$PATH
 
 source $HOME/.profile
 
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+
 # pass ctrl+s to the apps
 stty -ixon
 
+# Disable globing, ie expansion of wildcards
+# setopt noglob
+
+# Move to (freedesktop) trash instead of directly removing
+alias rm=trash-put
+
+alias tree='tree -C'
+
 function vim {
-    vim_path="$HOME/progs/vim7/bin/vim"
+    # vim_path="$HOME/progs/vim7/bin/vim"
+    # vim_path="/usr/local/bin/nvim"
+    vim_path="/usr/bin/vim"
     if ! test -z "$DISPLAY" && $($vim_path --version | grep "+dialog_con_gui" -q >/dev/null)
     then
        vim_args=("-g" "-geometry" "1024x768")
@@ -158,4 +172,5 @@ function vim {
 
 #export PYENV_ROOT="$HOME/.pyenv"
 #export PATH="$PYENV_ROOT/bin:$PATH"
+export FZF_DEFAULT_OPTS="--sort $HISTSIZE"
 source ~/.fzf.zsh

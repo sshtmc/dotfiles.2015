@@ -1,7 +1,8 @@
 # $Date:$
 
 $pdf_mode            = 1;
-$pdflatex            = 'pdflatex -interaction=nonstopmode -synctex=1 %O %S';
+$pdflatex            = 'pdflatex -interaction=batchmode -synctex=1 %O %S';
+# $pdflatex            = 'pdflatex -interaction=nonstopmode -synctex=1 %O %S';
 $bibtex              = 'bibtex %O %B';
 
 # for japanese platex2e
@@ -9,7 +10,7 @@ $bibtex              = 'bibtex %O %B';
 # $latex               = 'platex -kanji=utf8 -interaction=nonstopmode -synctex=1 %O %S';
 # $bibtex              = 'pbibtex -kanji=utf8 %O %B';
 
-$biber               = 'biber --bblencoding=utf8 -u -U --output_safechars %O %B';
+$biber               = 'biber --trace --bblencoding=utf8 -u -U --output_safechars %O %B';
 $biber_silent_switch = '--onlylog';
 
 $dvipdf              = 'dvipdfmx %O %S'; # needs -pdfdvi
