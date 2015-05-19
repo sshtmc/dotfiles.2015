@@ -1,0 +1,5 @@
+[HKEY_CLASSES_ROOT\.jpg]
+@="JPGfile"
+"Content Type"="application/jpg"
+[HKEY_CLASSES_ROOT\JPGfile\Shell\Open\command]
+@="winebrowser \"%1\"" 
