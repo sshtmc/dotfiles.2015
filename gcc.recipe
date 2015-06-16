@@ -1,6 +1,7 @@
 #!/bin/bash
 
-VERS=4.9.2
+VERS=5.1.0
+cd $TMP
 wget -c http://mirror.switch.ch/ftp/mirror/gnu/gcc/gcc-$VERS/gcc-$VERS.tar.bz2
 ionice -c3 nice -n 20 tar xf gcc-$VERS.tar.bz2
 cd gcc-$VERS
